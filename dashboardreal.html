@@ -1,0 +1,550 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neumorphism Mobile App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    :root {
+      --background: #1e1e2f;
+      --shadow-in: #171723;
+      --shadow-out: #25253b;
+      --text: #fff;
+      --accent: #1db954;
+      --search-bg: #1e1e2f;
+      --search-shadow-in: #171723;
+      --search-shadow-out: #25253b;
+    }
+
+    body.light {
+      --background: #e0e0e0;
+      --shadow-in: #bebebe;
+      --shadow-out: #ffffff;
+      --text: #333;
+      --accent: #1db954;
+      --search-bg: #e0e0e0;
+      --search-shadow-in: #bebebe;
+      --search-shadow-out: #ffffff;
+    }
+
+    body {
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--background);
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px var(--shadow-in), -10px -10px 20px var(--shadow-out);
+      overflow: hidden;
+      position: relative;
+      height: 700px;
+      overflow-y: auto;
+      padding-bottom: 70px; /* Space for fixed nav bar */
+    }
+
+    /* Neumorphism Styles */
+    .neumorphic {
+      background: var(--background);
+      box-shadow: 5px 5px 10px var(--shadow-in), -5px -5px 10px var(--shadow-out);
+      border-radius: 15px;
+    }
+
+    .neumorphic-btn {
+      background: var(--background);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 3px 3px 6px var(--shadow-in), -3px -3px 6px var(--shadow-out);
+      cursor: pointer;
+      color: var(--text);
+      font-size: 18px;
+    }
+
+    .neumorphic-btn:active {
+      box-shadow: inset 3px 3px 6px var(--shadow-in), inset -3px -3px 6px var(--shadow-out);
+    }
+
+    /* Top Fixed Container */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      background: var(--background);
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 5px 10px var(--shadow-in);
+      z-index: 10;
+    }
+
+    .top-bar .profile-upload {
+      position: relative;
+    }
+
+    .top-bar .profile-upload input {
+      opacity: 0;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .top-bar .welcome {
+      text-align: center;
+    }
+
+    .top-bar .welcome h2 {
+      font-size: 12px;
+      color: #b3b3b3;
+    }
+
+    .top-bar .welcome p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .top-bar .right-icons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Image Slider */
+    .image-slider {
+      position: relative;
+      height: 150px;
+      margin: 10px;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 5px 5px 10px var(--shadow-in), -5px -5px 10px var(--shadow-out);
+    }
+
+    .image-slider .slides {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+
+    .image-slider img {
+      width: 300%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      margin: 10px;
+      padding: 10px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px 40px 10px 10px;
+      border: none;
+      border-radius: 20px;
+      background: var(--search-bg);
+      box-shadow: inset 3px 3px 6px var(--shadow-in), inset -3px -3px 6px var(--shadow-out);
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .search-bar .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b3b3b3;
+    }
+
+    /* Small Box Container */
+    .small-box {
+      margin: 10px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 5px 5px 10px var(--shadow-in), -5px -5px 10px var(--shadow-out);
+    }
+
+    .small-box .header {
+      display: flex;
+      font-size: 15px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .long-box .todays h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .small-box .header button {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .small-box .items {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .small-box .item {
+      text-align: center;
+    }
+
+    .small-box .item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      box-shadow: 3px 3px 6px var(--shadow-in), -3px -3px 6px var(--shadow-out);
+    }
+
+    .small-box .item p {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .small-box .dropdown {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .small-box .dropdown.active {
+      display: block;
+    }
+
+    /* Long Box Container */
+    .long-box {
+      margin: 10px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 5px 5px 10px var(--shadow-in), -5px -5px 10px var(--shadow-out);
+    }
+
+    .long-box .item {
+      display: flex;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 3px 3px 6px var(--shadow-in), -3px -3px 6px var(--shadow-out);
+    }
+
+    .long-box .item img {
+      width: 40%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+
+    .long-box .item .content {
+      width: 70%;
+    }
+
+    .long-box .item h3 {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .long-box .item p {
+      font-size: 12px;
+      color: #b3b3b3;
+      margin-bottom: 5px;
+    }
+
+    .long-box .item button {
+      background: var(--accent);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 15px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 3px 3px 6px var(--shadow-in);
+    }
+
+    /* Footer Nav Bar */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 400px;
+      background: var(--background);
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -5px 10px var(--shadow-in);
+      z-index: 10;
+    }
+
+    .nav-bar .nav-item {
+      text-align: center;
+      position: relative;
+    }
+
+    .nav-bar .nav-item button {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+    .nav-bar .nav-item.center button {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      background: var(--accent);
+      box-shadow: 0 0 15px var(--accent), 3px 3px 6px var(--shadow-in), -3px -3px 6px var(--shadow-out);
+    }
+
+    .nav-bar .nav-item.active button {
+      background: var(--accent);
+      box-shadow: inset 3px 3px 6px var(--shadow-in), inset -3px -3px 6px var(--shadow-out);
+    }
+
+    .nav-bar .nav-item p {
+      display: none;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .nav-bar .nav-item.active p {
+      display: block;
+    }
+  </style>
+</head>
+<body class="dark">
+  <div class="container">
+    <!-- Top Fixed Container -->
+    <div class="top-bar neumorphic">
+      <div class="profile-upload">
+        <button class="neumorphic-btn">📷</button>
+        <input type="file" accept="image/*" id="profile-upload">
+      </div>
+      <div class="welcome">
+        <h2>Welcome</h2>
+        <p>John</p>
+      </div>
+      <div class="right-icons">
+        <button class="neumorphic-btn" id="theme-toggle">🌙</button>
+        <button class="neumorphic-btn">🔔</button>
+      </div>
+    </div>
+
+    <!-- Image Slider -->
+    <div class="image-slider neutron">
+      <div class="slides" id="slides">
+        <img src="./img/humans1.png" alt="Slide 1">
+        <img src="./img/humans2.png" alt="Slide 2">
+        <img src="./img/humans3.png" alt="Slide 3">
+        <img src="./img/humans4.png" alt="Slide 4">
+        <img src="./img/humans5.png" alt="Slide 5">
+        <img src="./img/humans6.png" alt="Slide 6">
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar neumorphic">
+      <input type="text" placeholder="Search...">
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <!-- Small Box Container -->
+    <div class="small-box neumorphic">
+      <div class="header">
+        <h2>Categories</h2>
+        <button id="view-all">View All</button>
+      </div>
+      <div class="items">
+        <div class="item">
+          <a href="quiz.html">
+          <img src="./img/dailyquiz.png" alt="Daily Quiz"></a>
+          <p>Daily Quiz</p>
+        </div>
+        <div class="item">
+          <a href="courses.html">
+          <img src="./img/course.png" alt="Courses"></a>
+          <p>Courses</p>
+        </div>
+        <div class="item">
+          <a href="classroom.html">
+          <img src="./img/classroom.png" alt="Class Room"></a>
+          <p>Class Room</p>
+        </div>
+        <div class="item">
+          <img src="./img/projects.png " alt="Projects">
+          <p>Projects</p>
+        </div>
+      </div>
+      <div class="dropdown" id="dropdown">
+        <div class="items">
+          <div class="item">
+            <img src="./img/notebook.png" alt="Note Book">
+            <p>Note Book</p>
+          </div>
+          <div class="item">
+            <img src="./img/history.png" alt="History">
+            <p>History</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Long Box Container -->
+    <div class="long-box neumorphic">
+      <div class="todays">
+        <h2>Todays Topics</h2>
+      </div>
+      <div class="item">
+        <img src="https://via.placeholder.com/120x80" alt="Item 1">
+        <div class="content">
+          <h3>Item Title 1</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <button>Action</button>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://via.placeholder.com/120x80" alt="Item 2">
+        <div class="content">
+          <h3>Item Title 2</h3>
+          <p>Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+          <button>Action</button>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://via.placeholder.com/120x80" alt="Item 3">
+        <div class="content">
+          <h3>Item Title 3</h3>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation.</p>
+          <button>Action</button>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://via.placeholder.com/120x80" alt="Item 4">
+        <div class="content">
+          <h3>Item Title 4</h3>
+          <p>Duis aute irure dolor in reprehenderit in voluptate.</p>
+          <button>Action</button>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://via.placeholder.com/120x80" alt="Item 5">
+        <div class="content">
+          <h3>Item Title 5</h3>
+          <p>Excepteur sint occaecat cupidatat non proident.</p>
+          <button>Action</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Nav Bar -->
+  <div class="nav-bar">
+    <div class="nav-item active">
+      <button class="neumorphic-btn">🏠</button>
+      <p>Home</p>
+    </div>
+    <div class="nav-item">
+      <button class="neumorphic-btn">🔍</button>
+      <p>Search</p>
+    </div>
+    <div class="nav-item center">
+      <button class="neumorphic-btn">⭐</button>
+      <p>Favorite</p>
+    </div>
+    <div class="nav-item">
+      <button class="neumorphic-btn">📚</button>
+      <p>Library</p>
+    </div>
+    <div class="nav-item">
+      <button class="neumorphic-btn">⚙️</button>
+      <p>Settings</p>
+    </div>
+  </div>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    function setTheme(theme) {
+      body.className = theme;
+      themeToggle.textContent = theme === 'light' ? '🌙' : '☀';
+      localStorage.setItem('theme', theme);
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const newTheme = body.classList.contains('light') ? 'dark' : 'light';
+      setTheme(newTheme);
+    });
+
+    // Profile Upload
+    const profileUpload = document.getElementById('profile-upload');
+    profileUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          console.log('Profile image uploaded:', e.target.result);
+          // Update profile image here if needed
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Image Slider
+    const slides = document.getElementById('slides');
+    let slideIndex = 0;
+    function slideNext() {
+      slideIndex = (slideIndex + 1) % 6;
+      slides.style.transform = `translateX(-${slideIndex * 100}%)`;
+    }
+    setInterval(slideNext, 4000);
+
+    // View All Dropdown
+    const viewAllBtn = document.getElementById('view-all');
+    const dropdown = document.getElementById('dropdown');
+    viewAllBtn.addEventListener('click', () => {
+      dropdown.classList.toggle('active');
+      viewAllBtn.textContent = dropdown.classList.contains('active') ? 'Hide' : 'View All';
+    });
+
+    // Navigation Bar
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
